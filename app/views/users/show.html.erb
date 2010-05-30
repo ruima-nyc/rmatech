@@ -1,0 +1,83 @@
+<p>
+  <b>用户ID:</b>
+  <strong><%=h @user.login %></strong> 
+</p>
+
+<p>
+  <b>URL:</b>
+  <%= @user.url ? link_to(@user.url, url_with_protocol(@user.url), :target => "_blank") : link_to(mypage_url(@user),mypage_url(@user))%>
+</p>
+
+<p>
+  <b>介绍:</b>
+  <%=  simple_format sanitize(@user.desc,:tags => %w(img param embed a acronym b strong i em li ul ol h1 h2 h3 h4 h5 h6 blockquote br cite sub sup ins p div),:attributes => %w(href title style src type width height wmode name value)) %>
+</p>
+<p>
+<% if current_user and @user.login == current_user.login %>
+  <%= link_to 'Edit', edit_user_path(@user) %>
+<% end %>
+</p>
+<div class="column span-12 first" >
+  <div class="caption"><%= @user.login %>收藏的文章</div>
+  <ul>
+    <% @user.posts.each do |post| %>
+      <li class="<%= is_unread(post) %>">
+        <%=  link_to post.title, post_url(post),:target => "_blank" %>
+
+        <span class="subtext">
+          <% if post.comments.size > 0 %>
+            <%=  link_to "("+post.comments.size.to_s+")", post_url(post)+"#newest_comment",:class=>"msg" %> |
+          <% end %>
+
+          <% if cookies[:post].to_s.split(',').include?(post.id.to_s) %>
+            <%= render :partial => "posts/zan", :locals => {:viewable => post, :zan => false,:btn => false} %>
+          <% else %>
+            <%= render :partial => "posts/zan", :locals => {:viewable => post, :zan => true,:btn => false} %>
+          <% end %>
+
+          <% if current_user and current_user.admin? %>
+            <%= link_to 'Unpublish', unpublish_post_path(post),  :method => :put %>
+          <% end %>
+          <br /> <%= time_ago_in_words(post.publish_at) %> |
+
+          <%= link_to "查看原文", url_with_protocol(post.url), :target => "_blank",:rel => "nofollow"%> (<%= post.source %>)
+        </span>
+      </li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="column span-1" >
+  <p></p>
+
+</div>
+
+<div class="column span-11 last" >
+  <div class="caption"><%= @user.login %>贡献的文章</div>
+  <ul>
+    <% @myposts.each do |post| %>
+      <li class="<%= is_unread(post) %>">
+        <%=  link_to post.title, post_url(post),:target => "_blank" %>
+
+        <span class="subtext">
+          <% if post.comments.size > 0 %>
+            <%=  link_to "("+post.comments.size.to_s+")", post_url(post)+"#newest_comment",:class=>"msg" %> |
+          <% end %>
+
+          <% if cookies[:post].to_s.split(',').include?(post.id.to_s) %>
+            <%= render :partial => "posts/zan", :locals => {:viewable => post, :zan => false,:btn => false} %>
+          <% else %>
+            <%= render :partial => "posts/zan", :locals => {:viewable => post, :zan => true,:btn => false} %>
+          <% end %>
+
+          <% if current_user and current_user.admin? %>
+            <%= link_to 'Unpublish', unpublish_post_path(post),  :method => :put %>
+          <% end %>
+          <br /> <%= time_ago_in_words(post.publish_at) %> |
+
+          <%= link_to "查看原文", url_with_protocol(post.url), :target => "_blank",:rel => "nofollow"%> (<%= post.source %>)
+        </span>
+      </li>
+    <% end %>
+  </ul>
+</div>

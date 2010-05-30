@@ -1,0 +1,23 @@
+<h1>新用户注册</h1>
+
+<% form_for(@user) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email,:class => "text" %>
+  </p>
+  <p>
+    <label>昵称 (A-Za-z0-9-) </label><br />
+    <%= f.text_field :login,:class => "text" %>
+  </p>
+  <p>
+    <%= f.label '密码' %><br />
+    <%= f.password_field :password,:class => "text" %>
+  </p>
+  <p>
+    <%= f.submit '注册',:class => "login"%>
+  </p>
+<% end %>
+
+<%= link_to 'Back', users_path %>

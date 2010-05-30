@@ -1,0 +1,14 @@
+    <span class="subtext"><%= @comment.user ? link_to(@comment.user.login,mypage_path(@comment.user),:class => 'user') : '游客' %>: <%= time_ago_in_words(@comment.created_at)%></span>
+  <p>
+  <%= @comment.comment%>
+  <br />
+  <div>
+    <%= render :partial => 'comments/reply_form', :locals => {:commentable => @comment, :block => true} %>
+  </div>
+
+<div class="column span-24 first last">
+  <ul class="records">
+    <a id='newest_comment'></a>
+    <%= render :partial => 'comments/comment', :collection => @comment.comments, :locals => {  :highlighted => false,:title => false}   %>
+  </ul>
+</div>

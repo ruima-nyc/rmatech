@@ -1,0 +1,40 @@
+
+<%= javascript_include_tag :defaults%>
+
+  <%=  javascript_include_tag 'effects' %>
+
+  <script type='text/javascript'>
+    function scrollToNewestComment(){
+      loc = document.location.toString();
+      if (loc.indexOf("#") != -1){
+        parts = loc.split('#')
+        loc = parts[0] + "#newest_comment"
+      } else {
+        loc = loc + "#newest_comment";
+      }
+      document.location.href = loc;
+    }
+  </script>
+
+<div class='errors'></div>
+<% form_remote_for(:post, :loading => "$('comment_spinner').show();",  :url => comments_url(commentable.class.to_s.underscore, commentable.id ), 500 => "$$('div#comments div.errors')[0].update(request.responseText);new Effect.Highlight($$('div#comments div.errors')[0]); return false;", :success => "new Insertion.After('newest_comment', request.responseText); $('comment_comment').clear();", :complete => "$('comment_spinner').hide();", :html => {:class => "MainForm"}) do |f| %>
+  <textarea   id="comment_comment" name="comment[comment]"></textarea>
+  <br/>
+        <% unless logged_in? %>
+  
+      <img id="imagecode_2" src="/imagecode" class="vcode" />
+      <a href="javascript:void(0);" onclick="$('imagecode_2').src='/imagecode?'+Math.random()">换一张</a>
+      OR
+      <a href="/login" > 登录</a>
+      <br />
+       <%= text_field_tag :imagecode,nil, :class => "vcode_input"%>
+    <% end %>
+    <button type="submit" >添加评论</button>
+    <img alt="Spinner" id="comment_spinner" src="/images/spinner.gif"  style="display:none;"/>
+    <br />
+
+
+<% end %>
+
+
+

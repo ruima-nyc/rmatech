@@ -1,0 +1,7 @@
+<% @meta = { :description => @tag.desc, :keywords => @tag.name+" 互联网 创业", :robots => 'index,follow'}  %>
+<%= javascript_include_tag "prototype" %>
+<p><a href="/" title="极客快报">首页</a>  &raquo;  <%= link_to @tag.name, "/tags/"+@tag.name %></p>
+<ol>
+  <%= render :partial => "posts/list", :collection => @posts, :as => :post%>
+</ol>
+<%= will_paginate @posts, :page_links => false, :class => 'large', :previous_label => nil, :next_label => "下一页" %>

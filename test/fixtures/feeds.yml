@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  url: http://hi.baidu.com/caoz/rss
+
+two:
+  url: http://robbin.javaeye.com/rss
+
+three:
+  url: http://feeds.feedburner.com/20ju/svGj
+
+four:
+  url: http://zhangzhe.heroku.com/blogs.rss
+
+five:
+  url: http://www.cyzone.cn/rss/
+
+six:
+  url: http://timyang.net/feed/

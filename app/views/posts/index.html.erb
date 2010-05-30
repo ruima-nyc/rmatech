@@ -1,0 +1,139 @@
+<% @meta = { :description => SITE_DESC, :keywords => SITE_KEYS }  %>
+
+
+
+<script type="text/Javascript">
+  function setCookie(c_name,value,expiredays)
+  {
+    var exdate = new Date();
+    exdate.setDate(exdate.getDate() + expiredays);
+    document.cookie = c_name + "=" +escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
+  }
+  function getCookie(c_name)
+  {
+    if (document.cookie.length > 0){
+      c_start = document.cookie.indexOf(c_name + "=")
+      if (c_start != -1){
+        c_start = c_start + c_name.length + 1;
+        c_end   = document.cookie.indexOf(";",c_start);
+        if (c_end == -1){
+          c_end = document.cookie.length;
+        }
+        return unescape(document.cookie.substring(c_start,c_end));
+      }
+    }
+    return null
+  }
+    function cleartxt(thefield) {
+    if (thefield.defaultValue == thefield.value)
+      thefield.value = "";
+      thefield.style.color = "black";
+  }
+
+  function notified()
+  {
+    setCookie('notice_version','1241',14);
+    $('notice').hide();
+  }
+
+  function login_box(){
+    Dialog.confirm($('login').innerHTML, {className:"dialog", width:500, okLabel: "提交",onOk:function(win){ $('login_form').submit(); return false;}});
+  }
+</script>
+
+<div id="notice" class="notice_box" style="display:none;">
+  <span id="close" onclick="notified(); return false;"></span>
+  <center class="subtext" >
+   正文阅读中加了相关文章和收藏
+  </center>
+
+</div>
+
+<% if flash[:notice] %>
+<div id="flash_notice" class="notice_box" >
+  <span id="close" onclick="$('flash_notice').hide(); return false;"></span>
+  <center class="subtext" >
+    <%= flash[:notice] %>
+  </center>
+</div>
+<% end %>
+
+<div onclick="login_box(); return false;" id="feedback">反馈</div>
+
+
+<div class="column span-17 first" >
+  <ol id="posts">
+
+    <% @posts.each do |post| %>
+      <li class="<%= is_unread(post) %>">
+        <%=  link_to post.title, post_url(post),:target => "_blank" %>
+
+        <span class="subtext">
+          <% if post.comments.size > 0 %>
+            <%=  link_to "("+post.comments.size.to_s+")", post_url(post)+"#newest_comment",:class=>"msg" %> |
+          <% end %>
+
+          <% if cookies[:post].to_s.split(',').include?(post.id.to_s) %>
+            <%= render :partial => "posts/zan", :locals => {:viewable => post, :zan => false,:btn => false} %>
+          <% else %>
+            <%= render :partial => "posts/zan", :locals => {:viewable => post, :zan => true,:btn => false} %>
+          <% end %>
+
+          <% if current_user and current_user.admin? %>
+            <%= link_to 'Unpublish', unpublish_post_path(post),  :method => :put %>
+          <% end %>
+          <br /> <%= time_ago_in_words(post.publish_at) %> |
+
+          <%= link_to "查看原文", url_with_protocol(post.url), :target => "_blank",:rel => "nofollow"%> (<%= post.source %>)
+        </span>
+      </li>
+
+    <% end %>
+  </ol>
+</div>
+<div class="column span-6">
+  <div class="caption">极客图书馆</div>
+  <ul>
+    <% @tags.each do |tag| %>
+      <li><%= link_to tag.name,tag %></li>
+
+    <% end %>
+  </ul>
+</div>
+<div class="column span-1 last"></div>
+
+<div class="column span-24 first last">
+  <%= will_paginate @posts, :page_links => false, :class => 'large', :previous_label => nil, :next_label => "下一页" %>
+</div>
+
+<script type="text/javascript">
+  if(getCookie('notice_version') != '1241'){
+    $('notice').show();
+  }else{
+    $('notice').hide();
+  }
+</script>
+
+<div id="login" style="display:none">
+
+  <% form_for(:feed_back,:html => {:id => 'login_form'}, :url => feed_backs_path) do |f| %>
+
+  <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email,:value => logged_in? ? current_user.email : '' %>
+  </p>
+  <p>
+    <%= f.label '意见与建议' %><br />
+    <%= f.text_area :body %>
+  </p>
+  <p>
+      <% unless logged_in? %>
+    <%= text_field_tag :imagecode,nil, :class => "vcode_input"%>
+    <img id="imagecode_2" src="/imagecode" class="vcode" />
+    <a href="javascript:void(0);" onclick="$('imagecode_2').src='/imagecode?'+Math.random()">换一张</a>
+  <% end %>
+  </p>
+
+<% end %>
+  
+</div>

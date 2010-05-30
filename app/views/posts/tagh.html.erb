@@ -1,0 +1,30 @@
+ <script language="javascript" type="text/javascript">
+ function checkAll(e, itemName)
+ {
+    var aa = document.getElementsByName(itemName);
+    for (var i=0; i<aa.length; i++)
+     aa[i].checked = e.checked;
+ }
+</script>
+<p>Finish the <%= @posts.size %> items in the queue. Ada ada ada...</p>
+<%  form_tag delete_selected_posts_path, :class => "MainForm" do %>
+<ol>
+
+
+    <% @posts.each do |post| %>
+      <li> <%= check_box_tag "delete[]", post.id %><%=  link_to post.title, preview_post_path(post, :history => '1'),:target => "_blank",:rel => "nofollow" %><span class="subtext"> (<%= post.source %>)
+          <% if current_user and current_user.admin? %>
+            <%= link_to 'Publish', publish_post_path(post),  :method => :put %>
+            ｜
+            <%= link_to 'Destroy', post,:method => :delete %>
+          <% end %>
+
+          <br /> <%= time_ago_in_words(post.updated_at) %> | <%= link_to "已有#{post.comments.size}条评论",post_url(post) %></span> </li>
+    <% end %>
+
+
+</ol>
+ <p><input type="checkbox" name="all" onclick="checkAll(this,'delete[]')" />全选/全不选 | <button type="submit" >删除选中文件</button></p>
+
+<% end %>
+<%= will_paginate @posts, :page_links => false, :class => 'large', :previous_label => nil, :next_label => "下一页" %>

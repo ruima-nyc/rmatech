@@ -1,0 +1,13 @@
+<span <%= "id=post_#{viewable.id.to_s}" %>>
+  <% ret_url = ret_url || '' %>
+  <% btn = btn || false %>
+  <% if zan %>
+    <%= link_to_remote "赞 (#{viewable.hits})", :update =>{ :success => "post_#{viewable.id.to_s}" }, :failure => "return false;",:url => {:controller => 'posts', :action => 'update_views',  :id => viewable,:page => params[:page], :ret_url => ret_url}, :method => :put,:html => {:class => 'zan'}%>
+  <% else %>
+    <%  if btn %>
+  <a class="button positive" > <%= "赞,让更多人看到 (#{viewable.hits})" %></a>
+      <% else %>
+    <span class="zan-off"> <%= "赞 (#{viewable.hits})" %></span>
+    <% end %>
+  <% end %>
+</span>

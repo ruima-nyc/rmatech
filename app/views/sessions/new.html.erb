@@ -1,0 +1,44 @@
+<script language="JavaScript">
+  function cleartxt(thefield) {
+    if (thefield.defaultValue == thefield.value)
+      thefield.value = "";
+      thefield.style.color = "black";
+  }
+</script>
+
+<div class="column span-9 first">
+
+<%=  form_tag '/sessions' %>
+<%= flash[:notice] %>
+
+  <p>
+    <%= label_tag 'Login' %><br />
+    <input id="login" name="login" type="text" class="text" value="昵称, 注册邮箱" onfocus="cleartxt(this)" size="16" style="color:#BBBBBB"/><br>
+  </p>
+  <p>
+    <%= label_tag '密码' %><br />
+    <%=  password_field_tag 'password', nil, :size => 16, :class=>"text"%> <br/>
+  </p>
+  <p>
+    <%= submit_tag '登录',:class => "login" %>
+  </p>
+
+
+
+  <%= link_to '新用户注册','/signup' %>
+
+</div>
+
+<% unless mobile_device? %>
+<div class="column span-2">
+
+  <p class="or">OR</p>
+</div>
+
+<div class="column span-13 last">
+    <p class="rpx">
+     <a class="rpxnow" onclick="return false;"
+href="https://rmatech.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2Frmatech.com%2Frpx_login">  用其他网站帐号登录</a>
+  </p>
+</div>
+<% end %>

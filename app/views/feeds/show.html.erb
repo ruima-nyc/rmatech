@@ -1,0 +1,16 @@
+<%= javascript_include_tag :defaults%>
+<ol>
+
+<% @feed.posts.each do |post| %>
+  <li> <%=  link_to post.title, post.url, :target => "_blank" %><span class="subtext"> (<%= post.feed.title %>)<br /> <%= time_ago_in_words(post.updated_at) %></span> </li>
+<% end %>
+</ol>
+
+<% form_for(@feed,:url => { :action => "sync" }) do |f| %>
+  <p>
+<%= f.submit '同步来源',:onclick => "$('spinner').show();" %>
+    <img alt="Spinner" id="spinner" src="/images/spinner.gif" style="display:none;" />
+  </p>
+  <% end %> 
+<%= link_to 'Edit', edit_feed_path(@feed) %> |
+<%= link_to 'Back', feeds_path %>

@@ -1,0 +1,24 @@
+<li id="<%= "comment_#{comment.id}" %>">
+  <span class="subtext"><%= comment.user ? link_to(comment.user.login,mypage_path(comment.user),:class => 'user') : '游客' %> <%= time_ago_in_words(comment.created_at)%>
+    <% if title %>
+对 <%= link_to comment.commentable.title,post_url(comment.commentable.id),:class => 'title'%>
+    <% end %>
+  </span>
+  <p>
+  <%= h  comment.comment%>
+  <br />
+  <span class="reply">
+    <%= link_to "▲回复",comment_url(comment.commentable.class.to_s.underscore, comment.commentable.id,comment.id) %> 
+  </span>
+  </p>
+</li>
+
+<% if highlighted %>
+  <script type="text/javascript">
+  <%=visual_effect :highlight, "comment_#{comment.id}", :duration => 1 %>
+  </script>
+<% end %>
+
+<div class="column span-23 prepend-1 first last">
+  <%= render :partial => 'comments/comment', :collection => comment.comments, :locals => {  :highlighted => false, :title => false}   %>
+</div>

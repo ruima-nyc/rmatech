@@ -1,0 +1,28 @@
+<h1>Editing post</h1>
+
+<% form_for(@post) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label '标题' %><br />
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.label '内容链接' %><br />
+    <%= f.text_field :url %>
+  </p>
+
+  <p>
+    <%= f.label '正文' %><br />
+    <%= f.text_area :body,:class => 'bigtext' %>
+  </p>
+
+  <%= f.hidden_field :creator_id, :value => current_user.id if current_user %>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @post %> |
+<%= link_to 'Back', posts_path %>

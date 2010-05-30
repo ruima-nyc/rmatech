@@ -1,0 +1,33 @@
+#!/bin/sh
+
+DISPATCH_PATH=/home/swordfish/www/public/dispatch.fcgi
+SOCKET_PATH=/tmp/lighttpd/swordfish
+RAILS_ENV=production
+export RAILS_ENV
+
+ case "$1" in
+
+   start)
+   #  for num in 0 1 2 3 4 5 6 7 8 9
+     for num in 0 1
+     do
+      /usr/local/lighttpd/bin/spawn-fcgi -f $DISPATCH_PATH -s $SOCKET_PATH/rails.socket-$num
+     done
+     ;;
+
+   stop)
+     killall -9 dispatch.fcgi
+     ;;
+
+   restart)
+     $0 stop
+     $0 start
+     ;;
+
+   *)
+     echo "Usage: dispatch.sh {start|stop|restart}"
+     ;;
+
+ esac
+
+ exit 0

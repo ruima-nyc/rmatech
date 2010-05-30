@@ -1,0 +1,13 @@
+<% @results.length %>
+
+<ol>
+  <% @results.each do |result| %>
+
+    <li><%=  link_to result[:title], "/posts/#{result[:id]}",:target => "_blank" %>
+      <span class="subtext">
+        <br />
+        <%= result[:body]%>
+        <br /><br /></span>
+    </li>
+  <% end %>
+</ol>

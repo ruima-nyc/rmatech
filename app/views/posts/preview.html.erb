@@ -1,0 +1,35 @@
+<% @meta = { :description => @post.title, :robots => 'index,nofollow'}  %>
+
+
+<div class="column span-24 first last" id="title" >
+  <%= link_to "首页","/"%>   &raquo;    <%=  link_to @post.title, post_url(@post), :target => "_blank" %><span class="subtext"> (<%= @post.source %>)
+    <% if current_user and current_user.admin? %>
+      <%= link_to 'Destroy', @post, :confirm => 'Are you sure?', :method => :delete %>
+    <% end %>
+           
+
+    <br /> <%= time_ago_in_words(@post.publish_at || @post.updated_at) %> |
+
+<%= link_to "查看原文", url_with_protocol(@post.url), :target => "_blank",:rel => "nofollow"%>
+
+  </span>
+
+  <p>
+    <%= simple_format sanitize(@post.body,:tags => %w(img embed a acronym b strong i em li ul ol h1 h2 h3 h4 h5 h6 blockquote br cite sub sup ins p div),:attributes => %w(href title style src type width height wmode )) %>
+  </p>
+</div>
+
+<%= link_to '编辑', edit_post_path(@post) %>
+
+<div class="column span-24 first last">
+  <%  form_tag publish_post_path(@post), :method => "put" do %>
+              <%  @tags = Tag.find(:all) %>
+              <%  @tags.each do |tag| %>
+                <%= check_box_tag "post[tags][]", tag.id %>
+                <%=  tag.name %>
+                <% end %>
+                <%= hidden_field_tag 'history' if params[:history]  %>
+              <button type="submit" class="positive">Publish</button>
+            <%end%>
+            <br /><%= button_to 'Destroy', @post,:method => :delete%>
+</div>

@@ -1,0 +1,19 @@
+xml.instruct!
+
+xml.rss "version" => "2.0", "xmlns:dc" => "http://purl.org/dc/elements/1.1/" do
+ xml.channel do
+
+   xml.title       "#{SITE_NAME}"
+   xml.link        url_for :only_path => false, :controller => 'posts'
+   xml.description "#{SITE_DESC}"
+
+   @posts.each do |post|
+     xml.item do
+       xml.title       post.title
+       xml.link        url_for(:only_path => false, :controller => 'posts', :action => 'show', :id => post.id)
+       xml.comments    url_for :only_path => false, :controller => 'posts', :action => 'show', :id => post.id
+       xml.description post.body ? simple_format(sanitize(post.body,:tags => %w(param embed a img acronym b strong i em li ul ol h1 h2 h3 h4 h5 h6 blockquote br cite sub sup ins p),:attributes => %w(href title style src type width height wmode name value))+"<BR/><BR/>"+link_to("参与讨论",url_for(:only_path => false, :controller => 'posts', :action => 'show', :id => post.id))) : link_to("参与讨论",url_for(:only_path => false, :controller => 'posts', :action => 'show', :id => post.id))
+     end
+   end
+ end
+end

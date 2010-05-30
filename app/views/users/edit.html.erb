@@ -1,0 +1,25 @@
+<h1>Editing user</h1>
+
+<% form_for(@user) do |f| %>
+  <%= f.error_messages %>
+
+  
+  <p>
+    
+    <h2><%= @user.login %></h2>
+  </p>
+  <p>
+    <%= f.label 'URL' %><br />
+    <%= f.text_field :url %>
+  </p>
+
+  <p>
+    <%= f.label '介绍' %><br />
+    <%= f.text_area :desc %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', users_path %>

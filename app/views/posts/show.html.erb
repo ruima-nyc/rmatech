@@ -1,0 +1,106 @@
+<% @meta = { :description => @post.title, :robots => 'index,nofollow'}  %>
+
+<script type="text/Javascript">
+
+  function login_box(){
+    Dialog.confirm($('login').innerHTML, {className:"dialog", width:500, okLabel: "提交",onOk:function(win){ $('login_form').submit(); return false;}});
+  }
+
+  function cleartxt(thefield) {
+    if (thefield.defaultValue == thefield.value)
+      thefield.value = "";
+    thefield.style.color = "black";
+  }
+</script>
+
+<div class="column span-24 first last" id="title" >
+  <h2>  <%= link_to "首页","/"%>   &raquo;
+    <% if @tag %>
+      <%= link_to @tag.name,@tag %> &raquo;
+    <% end %>
+    <%=  link_to @post.title, post_url(@post) %><span class="subtext"> (<%= @post.source %>)
+  </h2>
+  <% if current_user and current_user.admin? %>
+    <%= link_to 'Destroy', @post,  :method => :delete %>
+  <% end %>
+  <%= time_ago_in_words(@post.publish_at || @post.updated_at) %> |
+
+  <%= link_to "源地址："+url_with_protocol(@post.url), url_with_protocol(@post.url), :target => "_blank",:rel => "nofollow"%>
+
+</span>
+<div id="cc_body">
+  <p>
+    <%= simple_format sanitize(@post.body,:tags => %w(img param embed a acronym b strong i em li ul ol h1 h2 h3 h4 h5 h6 blockquote br cite sub sup ins p div),:attributes => %w(href title style src type width height wmode name value)) %>
+  </p>
+</div>
+<span id="<%= "btn_#{@post.id.to_s}" %>"><%= link_to_remote "赞,让更多人看到 (#{@post.hits})", :update =>{ :success => "btn_#{@post.id.to_s}" }, :failure => "return false;",:url => {:controller => 'posts', :action => 'update_views',  :id => @post, :btn => 1}, :method => :put,:html => {:class => 'button positive'}%></span>
+
+<% if current_user and current_user.posts.include?(@post)  %>
+
+  <a class="button positive" >你已收藏该文章</a>
+<% else %>
+  <%= link_to_remote "收藏,回头自己还能看",  :success => "window.location=request.responseText;",:failure => "login_box(); return false;",:url => {:controller => 'posts', :action => 'save',  :id => @post, :ret_url => logged_in? ? '':post_url(@post)}, :method => :put,:html => {:class => 'button positive'}%>
+<% end %>
+
+<script type="text/javascript">
+
+  function ns(b,a,content){if(b==1){window.open(encodeURI("http://share.renren.com/share/buttonshare.do?link="+window.location.href+"&title="+a),"Repost","scrollbars=no,width=600,height=450,left=75,top=20,status=no,resizable=yes")}else if(b==2){window.open(encodeURI("http://www.kaixin001.com/repaste/share.php?rtitle="+a+"&rurl="+window.location.href+"&rcontent="+content),"Repost","scrollbars=no,width=600,height=450,left=75,top=20,status=no,resizable=yes")}else if(b==3){window.open(encodeURI("http://v.t.sina.com.cn/share/share.php?url="+window.location.href+"&title="+a),"Repost","scrollbars=no,width=600,height=450,left=75,top=20,status=no,resizable=yes")}else if(b==4){window.open(encodeURI("http://9.douban.com/recommend/?url="+window.location.href+"&title="+a+"&v=2&n=1"),"Repost","scrollbars=no,width=600,height=450,left=75,top=20,status=no,resizable=yes")}else if(b==5){window.open(encodeURI("http://www.facebook.com/sharer.php?u="+window.location.href+"&t="+a),"Repost","scrollbars=no,width=600,height=450,left=75,top=20,status=no,resizable=yes")}};
+
+</script>
+<br />
+<h3>
+  Some Links
+</h3>
+<ul>
+  <% for rpost in @results %>
+    <li>
+      <% if rpost.is_a?(Hash) %>
+        <%= link_to rpost[:title], "/posts/#{rpost[:id]}" %>
+      <% else %>
+        <%= link_to rpost.title,post_url(rpost) %>
+      <% end %>
+
+    </li>
+  <% end %>
+</ul>
+<p class="subtext">
+
+  <a onclick="ns(1,'<%= @post.title %>');return false;" href="javascript:void(0)" title="分享这篇文章到人人网"><strong>分享到人人网</strong></a>
+  &nbsp;|&nbsp;
+  <a onclick="ns(2,'<%= @post.title %>');return false;" href="javascript:void(0)" title="分享这篇文章到开心网"><strong>分享到开心网</strong></a>
+  &nbsp;|&nbsp;
+  <a onclick="ns(3,'<%= @post.title %>');return false;" href="javascript:void(0)" title="分享这篇文章到新浪微博"><strong>分享到新浪微博</strong></a>
+  &nbsp;|&nbsp;
+  <a onclick="ns(4,'<%= @post.title %>');return false;" href="javascript:void(0)" title="推荐这篇文章到豆瓣9点"><strong>推荐到豆瓣9点</strong></a>
+  &nbsp;|&nbsp;
+  <a onclick="ns(5,'<%= @post.title %>');return false;" href="javascript:void(0)" title="推荐这篇文章到豆瓣9点"><strong>推荐到 facebook</strong></a>
+</p>
+<hr/>
+
+<div id="reply_form">
+  <%= render :partial => 'comments/reply_form', :locals => {:commentable => @post, :block => true} %>
+</div>
+</div>
+
+<div class="column span-24 first last">
+  <ul class="records">
+    <a id='newest_comment'></a>
+    <%= render :partial => 'comments/comment', :collection => @post.comments, :locals => {  :highlighted => false,:title => false}   %>
+  </ul>
+</div>
+
+<div id="login" style="display:none">
+
+  <%=  form_tag '/sessions',:id => 'login_form' %>
+  <p>
+    <%= label_tag 'Login' %><br />
+    <input id="login" name="login" type="text" class="text" value="昵称, 注册邮箱" onfocus="cleartxt(this)" size="16" style="color:#BBBBBB"/><br>
+  </p>
+  <p>
+    <%= label_tag '密码' %><br />
+    <%=  password_field_tag 'password', nil, :size => 16, :class=>"text"%> <br/>
+  </p>
+  <%= link_to '新用户注册','/signup' %> | <a href="/login">用其他网站帐号登录</a>
+
+
+</div>

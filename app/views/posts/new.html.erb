@@ -1,0 +1,53 @@
+<% unless params[:t] and params[:l] %>
+<p>
+  你可以把这个 <a title="极客分享" onclick="window.alert('请把本链接加到书签栏中.');return false;" href="javascript:void((function()%20{window.open(%22<%= HOST_URL %>/posts/new?l=%22+encodeURIComponent(document.location)+%22&t=%22+encodeURIComponent(document.title))})())">极客分享</a> 链接拖到书签栏中，就可以随时分享文章到极客快报。
+</p>
+<p class="or">OR</p>
+<% end %>
+
+<% form_for(@post) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label '标题' %><br />
+    <%= f.text_field :title,:value => params[:t] %>
+  </p>
+  <p>
+    <%= f.label '原文链接 （必添）' %><br />
+    <%= f.text_field :url,:value => params[:l] %>
+  </p>
+
+  <p>
+    <%= f.label '正文 （选添）' %><br />
+    <%= f.text_area :body,:class => 'bigtext' %>
+  </p>
+
+  <%= f.hidden_field :creator_id, :value => current_user.id if current_user %>
+  <p>
+  <% unless logged_in? %>
+    <%= text_field_tag :imagecode,nil, :class => "vcode_input"%>
+    <img id="imagecode_2" src="/imagecode" class="vcode" />
+    <a href="javascript:void(0);" onclick="$('imagecode_2').src='/imagecode?'+Math.random()">换一张</a>
+    OR
+    <a href="/login" > 登录</a>
+  <% end %>
+  </p>
+  <p>
+    <%= f.submit '提交新闻' %>
+  </p>
+<% end %>
+
+<p class="or">OR</p>
+
+<% form_for(Feed.new) do |f| %>
+  <p>
+    <%= f.label 'RSS Feed' %><br />
+    <%= f.text_field :url %>
+  </p>
+
+  <p>
+    <%= f.submit '提交新来源' %> (需登录)
+  </p>
+<% end %>
+
+<%= link_to 'Back', posts_path %>

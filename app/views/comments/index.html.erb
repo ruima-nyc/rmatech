@@ -1,0 +1,11 @@
+
+
+<%= javascript_include_tag "prototype" %>
+
+
+  <ul class="records">
+    <%= render :partial => 'comments/comment', :collection => @comments, :locals => {  :highlighted => false,:title => true}   %>
+  </ul>
+
+
+<%= will_paginate @comments, :page_links => false, :class => 'large', :previous_label => nil, :next_label => "下一页" %>

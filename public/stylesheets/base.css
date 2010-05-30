@@ -1,0 +1,225 @@
+body {
+    font-size: 87%;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color:#535353;
+}
+
+.CodeRay {
+    margin-bottom: 1em;
+}
+
+/* Headings
+ *  * --------------------------------------------------------------------- */
+h1,h2,h3,h4,h5,h6 { color: #111; }
+
+h3 { margin-top: 1.0em; }
+h4 { margin-top: 2.1em; }
+
+/* Lists
+ *  * --------------------------------------------------------------------- */
+
+li { margin-bottom: 0.4em; }
+
+/* Text Elements
+ *  * --------------------------------------------------------------------- */
+a                 { color: #125AA7; }
+a:hover           { color: #000; }
+blockquote        { color: #666; }
+
+pre {
+    background: #eee;
+    border:     1px solid #ddd;
+    margin-bottom: 1em;
+}
+
+
+hr {
+    background: #ddd;
+    color:      #ddd;
+}
+
+br {
+    padding:2.5em;
+}
+
+h2 {
+font-size:1.5em;
+line-height:1;
+margin-bottom:1em;
+}
+
+
+/* Tables
+ *  * --------------------------------------------------------------------- */
+table {
+    border-top:     1px solid #ddd;
+    border-left:    1px solid #ddd;
+}
+th,td {
+    border-bottom:  1px solid #ddd;
+    border-right:   1px solid #ddd;
+}
+
+/* Default Classes
+ *  * --------------------------------------------------------------------- */
+p.quiet { color: #666; }
+.alt    { color: #666; }
+
+#rmatech {
+    color: #bbbbbb;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 2em;
+    margin-left: 4px;
+    cursor: pointer;
+    text-decoration:none;
+}
+
+#header {
+    margin-bottom: 2em;
+}
+#hheader {
+    border-bottom: 1px solid #999;
+}
+
+#footer {
+    margin-top: 2em;
+    border-top: 1px solid #999;
+}
+
+.right-image {
+    float: right;
+    margin-right: 0;
+}
+
+.home-progress {
+    border: 1px solid #ddd;
+    padding: 1em 0.5em;
+    margin-bottom: 1em;
+}
+
+
+.subtext {color:#828282;font-family:Verdana;font-size:8pt;}
+.subtext a.title {color: #125AA7; background:none; font-size:10pt;padding:3px 0px 5px 0px;}
+.subtext a.link {background:none; font-size:10pt;padding:3px 0px 5px 0px;}
+.subtext a {color:#828282;
+            text-decoration:none;
+            background:transparent url(/images/link.gif) no-repeat scroll 0 0;
+            padding:3px 0px 5px 21px;}
+
+.subtext a.user{color:#828282;
+                text-decoration:none;
+                background:transparent url(/images/user3.gif) no-repeat scroll 0 0;
+                padding:3px 0px 5px 21px;}
+
+.subtext .msg {color:#828282;
+               text-decoration:none;
+               background:transparent url(/images/msg.gif) no-repeat scroll 0 0;
+               padding:3px 0px 5px 21px;
+               font-weight:normal;}
+
+.subtext .zan {color:#125AA7;
+               text-decoration:none;
+               background:transparent url(/images/zan_on.gif) no-repeat scroll 0 0;
+               padding:3px 0px 5px 21px;
+               font-weight:normal;
+
+}
+.subtext .zan-off{   text-decoration:none;color:#828282;  background:transparent url(/images/zan.gif) no-repeat scroll 0 0;
+                     padding:3px 0px 5px 21px;
+                     font-weight:normal;}
+.subtext a:hover {color: #125AA7; }
+
+
+
+#title {margin-bottom:2em;}
+
+#reply_form {margin-top:1em;}
+
+.reply {
+    font-family:Verdana;font-size:8pt;
+}
+
+.moto {
+    font-style:italic;
+}
+
+.or {  margin-top:1.8em;font-size: 2em;}
+.rpx { margin-top:4.2em;}
+
+.unread{}
+.unread a {font-weight:bold;}
+.unread a:visited {font-weight:normal;}
+
+#menu{
+    text-align:right;
+}
+
+#search{
+    text-align:right;
+
+}
+
+#search_form{
+    margin:5px 0 0;
+}
+
+.caption{border-bottom: 1px solid #999999;margin-bottom: 1em}
+
+
+#close{
+    background:transparent url(/images/close-box.gif) no-repeat scroll 0 0;
+    cursor:pointer;
+    height:9px;
+    position:absolute;
+    right:4px;
+    top:4px;
+    width:9px;
+
+}
+.notice_box{
+    background-color:#FFFFCC;
+    border: 1px solid #FFF1A8;
+    margin: 0em 2em 1em 2em;
+    padding: 4px 20px 4px 4px;
+    position:relative;
+}
+
+.bigtext{
+    width:690px;
+}
+
+.vcode{
+    height:24px;
+    vertical-align:middle;
+}
+.vcode_input{
+    width:5em;
+}
+
+#feedback {
+    background: #F6F6F6 no-repeat scroll 0 0;
+
+    color:#125AA7;
+    cursor:pointer;
+    font-family:'微软雅黑 ',YaHeiConsolas,'Microsoft YaHei';
+    font-size:16px;
+    font-weight:bold;
+    height:auto;
+    line-height:100%;
+    padding:12px;
+    position:fixed!important;
+    position:absolute;
+    right:0;
+    top:260px;
+    width:auto;
+    z-index:8765;
+}
+
+#feedback:hover{
+    background-color:#dff4ff;
+}
+
+
+
+/* EOF */
+

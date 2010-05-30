@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <title><%= page_title %></title>
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="<%= rss_url %>" />
+
+
+    <% if mobile_device? %>
+
+      <style type="text/css">
+        body { background-color:#fff; padding:0; margin:0; -webkit-text-size-adjust:none; }
+        a { color: #125AA7; font-size:12pt;}
+        #hheader {font:16px/1.2em Arial,Sans-serif;color:#535353;padding:5px;border-bottom: 1px solid #999;}
+        #rmatech{font:16px/1.2em Arial,Sans-serif;color:#535353;padding:5px;text-decoration:none;}
+        .moto {font:14px/1em Arial,Sans-serif;color:#535353;padding-left:5px;font-style:italic;}
+        .subtext {color:#828282;font-family:Verdana;font-size:10pt;}
+        .subtext a {color:#828282;
+                    text-decoration:none;
+                    background:transparent url(/images/msg.gif) no-repeat scroll 0 0;
+                    padding:3px 0px 5px 21px;}
+        .subtext a:hover {color: #125AA7;}
+        #title{padding-left:5px;margin-top:1em;}
+        .unread{font-size:15pt;}
+        .unread a {font-weight:bold;}
+        .unread a:visited {font-weight:normal;}
+        ol {list-style:none;list-style-position:inside;padding-left:5px;}
+        li {margin-bottom:0.5em;}
+
+        #menu {padding-left:5px;}
+        input.text{font-family:Helvetica,sans-serif;font-size:15px;padding-left:5px;width:90%;}
+        input.login{padding-left:5px;font-size:15pt;}
+        #comment_comment {padding-left:5px;width:90%;height:8em;}
+        #reply_form {margin-top:1em;}
+
+      </style>
+      <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+      <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+
+    <% else %>
+      <!--- Blueprint CSS Framework -->
+
+      <link rel="stylesheet" href="/stylesheets/blueprint/screen.css" type="text/css" media="screen, projection">
+        <link rel="stylesheet" href="/stylesheets/blueprint/print.css" type="text/css" media="print">
+          <!--[if lt IE 8]>
+            <link rel="stylesheet" href="/stylesheets/blueprint/ie.css" type="text/css" media="screen, projection">
+          <![endif]-->
+          <link rel="stylesheet" href="/stylesheets/base.css" type="text/css" media="screen, projection" />
+        <% end %>
+
+        <% if @meta  %>
+          <% @meta.each do |key| %>
+            <meta name="<%= key[0] %>" content="<%= key[1] %>" >
+            <% end %>
+          <% end %>
+
+          <%= javascript_include_tag "prototype" %>
+          <script type="text/javascript" src="/javascripts/window.js"> </script>
+          <link href="/stylesheets/default.css" rel="stylesheet" type="text/css"/>
+
+
+
+
+
+          </head>
+          <body>
+
+            <div class="container">
+              <div class="column span-24 first last" id="header">
+
+                <div class="column span-24 first last" id="hheader">
+                  <div class="column span-10 first">
+                    <a id="rmatech" href = "<%= HOST_URL %>"><%= SITE_NAME %></a>
+                  </div>
+                  <div class="column span-14 last" id="search">
+                    <% form_tag(search_posts_path, :method => :get,:id => 'search_form') do %>
+                      <%= text_field_tag :search_text, nil, :size => 20 %>
+                    <button type="submit" class = "button" style="margin:0px;" >搜索</button>
+                      
+                    <% end %>
+                  </div>
+                </div>
+
+
+
+                <div class="column span-10 first">
+                  <p class="moto"><%= SITE_DESC %></p>
+                </div>
+                <div class="column span-14 last" id="menu">
+
+                  <% if current_user %>
+                    <%= current_user.login %> |
+                    <%= link_to '个人页', mypage_path(current_user) %>
+                    |
+                  <% else %>
+                    <a href="/login">登录</a> |
+                  <% end %>
+
+                  <%= link_to '最新讨论', '/comments'%>
+                  |
+                  <%= link_to '提交文章', new_post_path %>
+                  |
+                  <%= link_to 'RSS', rss_url %>
+                  <% if current_user and current_user.admin? %>
+                    | <a href="/admin">管理</a>
+                  <% end %>
+                  <% if current_user %>
+                    | <a href="/logout">登出</a>
+                  <% end %>
+                  |
+                  <% if mobile_device? %>
+                    <%= link_to "完全界面", :mobile => 0 %>
+                  <% else %>
+                    <%= link_to "手机界面", :mobile => 1 %>
+                  <% end %>
+
+
+
+
+                </div>
+
+
+
+
+              </div>
+
+
+
+
+
+              <div class="column span-24 first last">
+
+                <%= yield %>
+              </div>
+
+
+              <div class="column span-24 first last">
+                <div class="column span-24 first last" id="footer">
+                  <div class="column span-18 first">
+                    <p><a href="/about">关于</a></p>
+                  </div>
+                  <div class="column span-6 align-right last">
+
+                    &copy; 2009-2010 RMA Technologies
+                  </div>
+                </div>
+              </div>
+
+              <%
+              header = controller.controller_name+"_"+controller.action_name
+              if header == 'posts_index'
+
+              %>
+                <div class="column span-24 first last">
+                  <p class="subtext">
+                    友情链接： <a href="http://www.qifei.net" title="美国留学" class="link">起飞网</a> | <a href="http://www.viito.com/" class="link">微唐网货观察室</a> | <a class="link" href="http://www.reader360.net/">搜手网</a> | <a class="link" href="http://cnitcomments.com">雁南飞</a> 欢迎交换: ma.rui [at] hotmail.com
+                  </p>
+                </div>
+
+              <% end %>
+
+            </div>
+
+            <script type="text/javascript">
+              var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+              document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+            </script>
+            <script type="text/javascript">
+              try {
+                var pageTracker = _gat._getTracker("UA-15655541-1");
+                pageTracker._setDomainName(".rmatech.com");
+                pageTracker._trackPageview();
+              } catch(err) {}
+
+
+              var rpxJsHost = (("https:" == document.location.protocol) ? "https://" : "http://static.");
+              document.write(unescape("%3Cscript src='" + rpxJsHost +
+                "rpxnow.com/js/lib/rpx.js' type='text/javascript'%3E%3C/script%3E"));
+            </script>
+            <script type="text/javascript">
+              RPXNOW.overlay = true;
+              RPXNOW.language_preference = 'zh';
+            </script>
+
+          </body>
+          </html>

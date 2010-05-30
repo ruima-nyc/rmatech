@@ -1,0 +1,22 @@
+
+<table>
+  <tr>
+    <th>来源</th>
+    <th>该来源新闻</th>
+    <th>修改</th>
+    <th>删除</th>
+  </tr>
+
+<% @feeds.each do |feed| %>
+  <tr>
+    <td><%= feed.title %></td>
+    <td><%= link_to 'Show', feed %></td>
+    <td><%= link_to 'Edit', edit_feed_path(feed) %></td>
+    <td><%= link_to 'Destroy', feed, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to '新来源', new_feed_path %>

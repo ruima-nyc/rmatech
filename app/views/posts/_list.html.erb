@@ -1,0 +1,23 @@
+<li class="<%= is_unread(post) %>">
+<%=  link_to post.title, post_url(post),:target => "_blank" %>
+
+      <span class="subtext">
+        <% if post.comments.size > 0 %>
+          <%=  link_to "("+post.comments.size.to_s+")", post_url(post)+"#newest_comment",:class=>"msg" %> |
+        <% end %>
+
+        <% if cookies[:post].to_s.split(',').include?(post.id.to_s) %>
+          <%= render :partial => "posts/zan", :locals => {:viewable => post, :zan => false,:btn => false} %>
+        <% else %>
+          <%= render :partial => "posts/zan", :locals => {:viewable => post, :zan => true,:btn => false} %>
+        <% end %>
+
+        <% if current_user and current_user.admin? %>
+          <%= link_to 'Unpublish', unpublish_post_path(post),  :method => :put %>
+        <% end %>
+        <br /> <%= time_ago_in_words(post.publish_at) %> |
+
+        <%= link_to "查看原文", url_with_protocol(post.url), :target => "_blank",:rel => "nofollow"%> (<%= post.source %>)
+        <br /><br />
+      </span>
+</li>
